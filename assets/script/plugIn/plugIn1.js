@@ -1,6 +1,7 @@
 //-- 在cocoscreator中设置plugIn插件脚本
 //-- 不在任何函数内声明的局部变量在插件脚本内都会暴露成全局变量
 var ggbaolou = "9999";
+window.ggTestpackage = "scene-script scene-walker.js";
 
 (function(){
     console.log("插件运行了吗？");
