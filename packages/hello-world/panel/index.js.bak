@@ -41,8 +41,7 @@ Editor.Panel.extend({
 
 	let self = this;
     //-- 面板渲染进程监听2
-    require('electron').ipcRenderer.on('hello-world:my-message2', function(event, args) {
-		//Editor.log('ffff');self.$label.innerText = 'my-message2'; 
+    require('electron').ipcRenderer.on('hello-world:my-message2', function(event, args) {Editor.log('ffff');self.$label.innerText = 'my-message2'; 
 	});
   },
   //-- 面板渲染进程监听1

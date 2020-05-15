@@ -9,11 +9,17 @@
     "name": "shared-resource"
   },
   "main-menu": {
-    "Packages/Hello World": {
+    "Packages/H/Hello World": {
       "message": "hello-world:say-hello"
     },
-     "Other Packages/New Panel": {
+     "Other Packages/OPen New Panel": {
       "message": "hello-world:open"
+    },
+   "Packages/H/sendToPanelMsg1": {
+      "message": "hello-world:sendToPanelMsg1"
+    },
+   "Packages/H/sendToPanelMsg2": {
+      "message": "hello-world:sendToPanelMsg2"
     }
   },
 "panel": {

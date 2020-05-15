@@ -1,0 +1,12 @@
+{
+    "name": "hello-registerjs",
+    "scene-script": "scene-walker.js",
+
+      "main": "main.js",
+  "main-menu": {
+   "menuregisterl/H": {
+      "message": "hello-registerjs:open"
+    }
+  }
+
+}

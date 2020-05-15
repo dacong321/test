@@ -1,0 +1,23 @@
+{
+  "name": "hello-htmlpanel",
+  "version": "0.0.1",
+  "description": "一份简单的扩展包",
+  "author": "Cocos Creator",
+  "main": "main.js",
+
+
+  "main-menu": {
+    "menuHtmlPanel/H": {
+      "message": "hello-htmlpanel:open"
+    }
+  },
+
+
+  "panel": {
+    "main": "html.html",
+    "type": "simple",
+    "title": "Simple Panel",
+    "width": 400,
+    "height": 300
+  }
+}
