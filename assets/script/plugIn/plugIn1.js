@@ -21,13 +21,53 @@ window.ggTestpackage = "scene-script scene-walker.js";
     };
     Emitter.prototype.tt = function(){
         // --未用use strict，未定义的变量一旦赋值就变成了全局变量
-        testVar = this.Down();
+        testVar = this.Down();//-- 这里应该是tt的调用对象
         console.log("testVar ==", testVar);
+        console.log("test  PlugIn ==> Emitter.prototype.tt this1 ==", this); //测试结果 这里应该是tt的调用对象 
     };
 
     var EmiterObj = new Emitter();
     EmiterObj.Down();
     EmiterObj.tt();
+
+    console.log("test  PlugIn this1 ==", this); //test  PlugIn this1 == Window
+
+
+    testTest= function(e, t) {
+        console.log("++++++++++++++++++++++++++++ e.length ==", e.length);
+        for (let a = 0; a < e.length; a++) {console.log(a + "------------", e[a]);}
+        console.log("***************************");
+        for (let n = 0; n < 10; n++) {console.log(n + "------------", t[n]);}
+        };
+    //let obj1 = {a:"abc", b:"def", c:"hij"};
+    //let obj2 = {aa:"aabbcc", bb:"ddeeff", cc:"hhiijj"};
+
+    let obj1  = ["abc", "def", "hij"];
+    let obj2 = ["aabbcc", "ddeeff","hhiijj"];
+    testTest(obj1,obj2);
+
+    //console.log("=============================");
+    //for (var n = 0; n < 10; n++) console.log(n + "------------", obj2[n]);
+
+    testZuoYongYu = function(){
+        for(var i=0; i<10; i++) {
+            console.log( i );
+            }
+        
+        for (var i = 1; i <= 5; i++) {
+            setTimeout(function timer() {
+            console.log(i);
+            }, i * 1000);
+        }
+        //每次打印出来都将会是6，延迟函数的回调会在循环结束时才执行
+        //根据作用域的工作原理，实际情况是尽管循环中的五个函数是在各个迭代中分别定义的，
+        //但是它们都被封闭在一个共享的全局作用域中，因此实际上只有一个i。
+    }
+
+    /**
+     * 在 ES5 及之前版本，JavaScript 只拥有函数作用域，没有块作用域（with 和 try...catch 除外）。在 ES6 中，JS 引入了块作用域，{ } 内是单独的一个作用域。采用 let 或者 const 声明的变量会挟持所在块的作用域，也就是说，这声明关键字会将变量绑定到所在的任意作用域中（通常是 {...} 内部）。
+     */
+
 })();
 
 // // -- 插件中暴露在函数外的变量 在其他脚本中在直接写变量名使用即可。
@@ -77,6 +117,7 @@ window.ggTestpackage = "scene-script scene-walker.js";
 // constructor: ƒ Base(obj)
 // __proto__: Object
 
-
-
+    console.log("test  PlugIn this2 ==", this); //test  PlugIn this2 == Window
 })();
+
+
