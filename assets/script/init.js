@@ -46,12 +46,21 @@ cc.Class({
         nodeRoot: {
             default: null,
             type: cc.Node,
+        },
+        usedNotify:{
+            //-- 必须要有default,usedNotify被赋值时notify才会被触发
+            default:0,
+            type: Number,
+            notify(){
+                cc.log("usedNotify被重新赋值了 this.usedNotify = ", this.usedNotify);
+            }
         }
     },
 
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
         cc.log("init onLoad 被执行");
+        
     },
 
     start () {
@@ -65,7 +74,10 @@ cc.Class({
         //this.testCreateHersSprite();
         //this.testggCom();
         //this.testPlugInJsGlobalVar();
-        this.testGlobalNode();
+        //this.testGlobalNode();
+        //this.testClipAnimation();
+        //this.testReadJson();
+        this.testUsedNotify();
         cc.log("==========================");
     },
 
@@ -201,5 +213,44 @@ cc.Class({
         }
         cc.log("==========================");
         cc.log("cc.js. == ", cc.js);
+    },
+    //-- 测试clip动画
+    testClipAnimation(){
+        let clipNode = cc.find("clipNode", this.node);
+        let clip = clipNode.getComponent(cc.Animation);
+        this.node.runAction(cc.sequence(
+            cc.callFunc(function () { clip.play("clipNode");  cc.log("第一个动作")},
+                ),
+                //-- 中间间隔的时间要把第一个动画播完的，不播完第一个动画的事件有可能不被触发。
+                cc.delayTime(3.5),
+                cc.callFunc(function () {
+                    clip.play("clipNode22");
+                })
+        ));
+      
+    },
+    //=====================================================================
+    //-- 这个两个函数没有绑在NodeClip节点上，所以，节点上的事件找不到此二个函数。
+    clipEvent(string1, string2){
+        cc.log("clipEvent 被触发，打印参数" + string1 + string2);
+    },
+    clipEvent2(){
+        cc.log("clipEvent2222");
+    },
+    //=====================================================================
+    //-- 测试json
+    testReadJson(){
+        cc.loader.loadRes("config/peizi", function(err, jsonObj){
+            if(err){
+                cc.log("Cant Laoded");
+                return;
+            }
+            cc.log("Json = ", jsonObj.json);
+        })
+    },
+    //=====================================================================
+    testUsedNotify(){
+        this.usedNotify = 2;
+        cc.log( "this.usedNotify = 2;",  this.usedNotify)
     },
 });
