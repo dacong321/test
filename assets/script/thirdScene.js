@@ -38,7 +38,7 @@ cc.Class({
                     self.initObjectPoor(prefab);
                     self.setMonsterToScene(2);
                     //self.killMonster();
-                    self.killMonsterOneByOne();
+                    //self.killMonsterOneByOne();
                     self.sendLocalEvent();
                 }
         })
@@ -82,12 +82,19 @@ cc.Class({
         }
     },
     initObjectPoor(prefab) {
+        let self = this;
         // new 一个对象池
         this.monsterPoor = new cc.NodePool();
         let monsterCnt = 5;
         for(let i = 0 ; i < monsterCnt ; i++){
             cc.log("prefab=", prefab);
             let mt = cc.instantiate(prefab);
+            mt.name = "monster" + i + 1;
+            mt.on("Over", function(){
+                cc.log("arguments === ", arguments);
+                self.monsterPoor.put(mt);
+                cc.log("self.monsterPoor === ", self.monsterPoor);
+            })
             if(mt){
                 //-- 将对象放入对象池
                 this.monsterPoor.put(mt);
@@ -119,11 +126,12 @@ cc.Class({
     },
     //-------------------------事件的使用----------------------------------------------------------
     addEvent(){
-        this.node.on("KFC", function(event){
-            cc.log("hhh 收到了", event);
+        this.node.on("KFC", function(arg1){
+            cc.log("hhh 收到了", arg1);
+            cc.log("arguments", arguments);
         });
     },
     sendLocalEvent(){
-        this.node.emit("KFC", {Key: 123});
+        this.node.emit("KFC", {Key: 123}, 99, "oo");
     }
 });
