@@ -50,7 +50,7 @@ cc.Class({
         usedNotify:{
             //-- 必须要有default,usedNotify被赋值时notify才会被触发
             default:0,
-            type: Number,
+            type: cc.Integer,
             notify(){
                 cc.log("usedNotify被重新赋值了 this.usedNotify = ", this.usedNotify);
             }

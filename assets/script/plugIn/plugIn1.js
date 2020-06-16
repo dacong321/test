@@ -85,6 +85,7 @@ window.ggTestpackage = "scene-script scene-walker.js";
             return obj;
         }
     };
+    //-- 原型属性， 在实例中可以看到
     Base.prototype.test1 = function(){
         console.log("test1");
     }
@@ -94,15 +95,23 @@ window.ggTestpackage = "scene-script scene-walker.js";
     Base.prototype.test3 = function(){
         console.log("test3");
     };
+    //-- 属于类型，不属于对象，在对象中看不到此属性
     Base.test4 = function(){
         console.log("test444444");
     };
-    var BaseObj = Object.create(Base.prototype);
+
+    //-- 必须接收一个对象参数，创建的新对象的原型指向接收的参数对象，即继承指定对象
+    var BaseObj = Object.create(Base.prototype); //将Base的原型对象属性（Base.prototype） 赋值给 新对象的内部属性（BaseObj._proto_）
     console.log("BaseObj", BaseObj);
-    console.log("BaseObj.prototype", BaseObj.prototype);
-    console.log("Base.prototype", Base.prototype);
+    console.log("BaseObj.prototype", BaseObj.prototype);// 实例类型没有这个属性
+    console.log("BaseObj._proto__", BaseObj._proto__); // 实例类型属性
+    console.log("Base.prototype", Base.prototype); //类型的：原型类型对象
+    //-- 继承内置对象 原型指向Object.prototype
+    var BaseObj2 = new Object();
+    console.log("BaseObj2", BaseObj2);
 
 
+    //-- 对象的实例属性
     BaseObj.test11 = function(){};
     console.log("BaseObj", BaseObj);
     console.log("Base", Base);
@@ -117,6 +126,8 @@ window.ggTestpackage = "scene-script scene-walker.js";
 // constructor: ƒ Base(obj)
 // __proto__: Object
 
+    let baseObj = new Base();
+    cc.log("baseObj===", baseObj);
     console.log("test  PlugIn this2 ==", this); //test  PlugIn this2 == Window
 })();
 
