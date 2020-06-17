@@ -8,11 +8,20 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-var config = require("config");
+var config = require("config");     //这个config不是cocos组件，不用this调用,直接 config.某某某
+var timeClock = require("timeClock"); //这个timeColck是cocos组件，timeClock类型可以被继承。类型如果不被继承需要被实例化使用， new timeClock();
 cc.Class({
     extends: cc.Component,
 
     properties: {
+        A:{
+            default:null,
+            type:cc.Node
+        },
+        B: cc.Node,
+        C: cc.Node,
+        MaskNode:cc.Node,
+        Graphics:cc.Graphics,
     },
 
 
@@ -22,9 +31,67 @@ cc.Class({
     },
 
     start () {
+        cc.log("MaskNode", this.MaskNode);
+        this.drawGraphics();
+    },
+    drawGraphics(){
+     
+
+        this.Graphics.moveTo(20, 100);
+        this.Graphics.lineTo(20, 20);
+        this.Graphics.lineTo(70, 20);
+        this.Graphics.fill();
+        // this.Graphics.fillColor = new cc.Color().fromHEX('#0000ff');
+        // this.Graphics.circle(200, 200, 200);
+        // this.Graphics.fill();
 
     },
+    //-------------------------事件的使用----------------------------------------------------------
+    addEvent(){
+        //-------------------------------------
+        this.node.on("KFC", function(arg1){
+            cc.log("hhh 收到了", arg1);
+            cc.log("arguments", arguments);
+        });
 
+        //--------------------------------------系统点击和触摸事件--------------------------------
+        //-- 测试触摸事件支持节点树的冒泡
+        this.A.on(cc.Node.EventType.TOUCH_END, function(event){
+            console.log("A has been touch", event);
+        }, this);
+        //-- 父节点的触摸或鼠标事件先于它的任何子节点派发，使用第四个参数
+        this.B.on(cc.Node.EventType.TOUCH_END, function(event){
+            console.log("B has been touch");
+            //-- 这句是禁止冒泡的
+           //event.stopPropagation();
+        }, this, true);
+        this.C.on(cc.Node.EventType.TOUCH_END, function(event){
+            console.log("C has been touch");
+        }, this);
+
+
+
+        //-- 定时器设置暂停和重启系统事件
+        let time = 5000;
+        let self = this;
+        let cbPause = function(){
+            //暂停节点上注册的所有节点系统事件，节点系统事件包含触摸和点击事件，参数为true则暂停本节点和其子节点的节点系统事件
+            self.A.pauseSystemEvents(true);
+            cc.log("暂停节点上注册的所有节点系统事件，节点系统事件包含触摸和点击事件，参数为true则暂停本节点和其子节点的节点系统事件")
+        };  
+        let cbResume = function(){
+            //-- 不加参数只恢复了A
+            self.A.resumeSystemEvents();
+            cc.log("恢复节点上注册的所有节点系统事件，节点系统事件包含触摸和点击事件，参数为true则恢复本节点和其子节点的节点系统事件")
+        };
+
+        let tObj = new timeClock();
+        tObj.setTimer(cbPause, time);
+        tObj.setTimer(cbResume, time * 2);
+    },
+    sendLocalEvent(){
+        this.node.emit("KFC", {Key: 123}, 99, "oo");
+    },
     //-------------------------对象池的使用----------------------------------------------------------
     // update (dt) {},
     initMonster(){
@@ -124,14 +191,5 @@ cc.Class({
         }
         this.schedule(cb, 1);
     },
-    //-------------------------事件的使用----------------------------------------------------------
-    addEvent(){
-        this.node.on("KFC", function(arg1){
-            cc.log("hhh 收到了", arg1);
-            cc.log("arguments", arguments);
-        });
-    },
-    sendLocalEvent(){
-        this.node.emit("KFC", {Key: 123}, 99, "oo");
-    }
+
 });
