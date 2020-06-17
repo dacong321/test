@@ -82,7 +82,34 @@ cc.Class({
     },
 
     // update (dt) {},
+    //-- 调用原生接口
+    usedNaviate(msg){
+        let level = 100;
+        //-- js中调用java方法
+        //-- 传入 Java 的类名，方法名，方法签名，参数就可以直接调用 Java 的静态方法，并且可以获得 Java 方法的返回值。
+        if (cc.sys.isNative && cc.sys.os == cc.sys.OS_ANDROID) {
+            cc.log("原生接口");
+           // msg = this.buffer_string + '\n[cclog][' + clock + '][' + tag + ']' + msg;
 
+            //-- 方法签名分别是 I    Ljava/lang/String;    Ljava/lang/String;    即int string string
+            //jsb.reflection.callStaticMethod("com/CommonUtils", "log", "(ILjava/lang/String;Ljava/lang/String;)V", level, 'cclog', msg);
+
+            jsb.reflection.callStaticMethod("com/CommonUtils", "hello", "(Ljava/lang/String;)V", "this is a message from js");
+            return;
+        }else{
+            cc.log("没钓到原生接口");
+        }
+    },
+    useNaviate2(){
+        if (cc.sys.isNative && cc.sys.os == cc.sys.OS_ANDROID) {
+        jsb.reflection.callStaticMethod("com/CommonUtils", "hello", "(Ljava/lang/String;)V", "this is a message from js 666 单选");
+        }
+    },
+    useNaviate3() {
+        if (cc.sys.isNative && cc.sys.os == cc.sys.OS_ANDROID) {
+            jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "showAlertDialog", "(Ljava/lang/String;Ljava/lang/String;)V", "title", "hahahahha");
+        }
+    },
     //-- 测试全局域中的数据，只需require不需要拿东西接，就可使用gg的东西
     testggCom(){
         //-- 表示只要require了，并且require的数据在全局域中，就可以打印出全局域中的属性
